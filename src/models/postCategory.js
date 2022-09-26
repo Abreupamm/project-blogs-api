@@ -2,7 +2,7 @@ const postCategorySchema = (sequelize, DataTypes) => {
   const postCategoryTable = sequelize.define('postCategory', 
   {},{
     timestamps: false,
-    tableName: 'post_categories',
+    tableName: 'posts_categories',
     underscored: true
   });
   postCategorySchema.associate = (models) => {
