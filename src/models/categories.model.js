@@ -1,5 +1,5 @@
 const CategoriesSchema = (sequelize, DataTypes) => {
-  const CategoriesTable = sequelize.define('Categories', {
+  const CategoriesTable = sequelize.define('Category', {
     name: DataTypes.STRING, 
   },
   {
