@@ -24,10 +24,10 @@ module.exports = {
         onDelete: 'CASCATE',
       },
       published: {
-        type: Sequelize.DATETIME,
+        type: Sequelize.DATE,
       },
       updated: {
-        type: Sequelize.DATETIME,
+        type: Sequelize.DATE,
       }
     });
   },
