@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+const mapError = require('./error');
+
 const TOKEN_SECRET_KEY = process.env.JWT_SECRET;
 
 const generateToken = ({ id, displayName }) => {
@@ -13,4 +15,17 @@ const generateToken = ({ id, displayName }) => {
   return jwt.sign(payload, TOKEN_SECRET_KEY, jwtConfig);
 };
 
-module.exports = { generateToken };
+const authenticateToken = (token) => {
+  const type = mapError('UNAUTHORIZED');
+  if (!token) {
+    return { type, message: 'Token not found' };
+  }
+  try {
+    const user = jwt.verify(token, TOKEN_SECRET_KEY);
+    return { user };
+  } catch (error) {
+    return { type, message: 'Expired or invalid token' };
+  }
+};
+
+module.exports = { generateToken, authenticateToken };
