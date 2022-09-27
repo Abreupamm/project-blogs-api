@@ -17,9 +17,7 @@ const generateToken = ({ id, displayName }) => {
 
 const authenticateToken = (token) => {
   const type = mapError('UNAUTHORIZED');
-  if (!token) {
-    return { type, message: 'Token not found' };
-  }
+  
   try {
     const user = jwt.verify(token, TOKEN_SECRET_KEY);
     return { user };

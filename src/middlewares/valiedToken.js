@@ -1,9 +1,15 @@
 const { authenticateToken } = require('../utils/JWT');
 
-const tokenIsValied = (req, res, next) => {
-  const { token } = req.header;
+const mapError = require('../utils/error');
 
-  const { type, message, user } = authenticateToken(token);
+const tokenIsValied = (req, res, next) => {
+  const { authorization } = req.headers;
+
+  if (!authorization) {
+    return res.status(mapError('UNAUTHORIZED')).json({ message: 'Token not found' });
+  }
+
+  const { type, message, user } = authenticateToken(authorization);
 
   if (!user) {
     return res.status(type).json({ message });
