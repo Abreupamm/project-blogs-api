@@ -27,7 +27,18 @@ const getAllUsers = async () => {
   return all;
 };
 
+const userById = async (id) => {
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    return { type: mapError('NOT_FOUND'), message: 'User does not exist' };
+  }
+  
+  return { user };
+};
+
 module.exports = { 
   addUser,
   getAllUsers,
+  userById,
  };
