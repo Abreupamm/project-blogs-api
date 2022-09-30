@@ -1,4 +1,5 @@
 const postService = require('../service/post.service');
+// const categoriesService = require('../service/categories.service');
 
 const createPost = async (req, res) => {
   const { type, message, post } = await postService.newPost(req.body);
