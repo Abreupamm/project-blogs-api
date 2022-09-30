@@ -14,7 +14,18 @@ const categoriesList = async () => {
   return { categories: all };
 };
 
+const getCategoryById = async (id) => {
+  const category = await Category.findByPk(id);
+
+  if (!category) {
+    return null;
+  }
+
+  return true;
+};
+
 module.exports = {
   categoriesList,
   addcategory,
+  getCategoryById,
 };
