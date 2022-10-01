@@ -5,11 +5,11 @@ const config = require('../config/config');
 const env = process.env.NODE_ENV || 'development';
 const sequelize = new Sequelize(config[env]);
 
-const newPost = async ({ title, content, categoryIds, locals }) => {
+const newPost = async ({ title, content, categoryIds }, { user }) => {
   const t = await sequelize.transaction();
   try {
     const post = await BlogPots.create(
-      { title, content, userId: locals.user.id },
+      { title, content, userId: user.id },
       { transaction: t },
     );
 

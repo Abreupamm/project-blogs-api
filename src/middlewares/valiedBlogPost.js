@@ -4,16 +4,23 @@ const isCategory = require('../utils/isCategory');
 
 const categoryIdsIsValied = async (req, res, next) => {
   const { categoryIds } = req.body;
-  const type = mapError('NOT_FOUND');
+   const type = mapError('IS_REQUIRED');
   const message = '"categoryIds" not found';
 
   if (!categoryIds) {
     return res.status(type).json({ message });
   }
 
-  const valied = await isCategory(categoryIds);
+  const valied = categoryIds.map(async (id) => {
+   const isValied = await isCategory(id);
+   if (isValied) {
+    return id;
+   }
+  });
+
+  const result = valied.some((element) => element === true);
  
-  if (!valied) {
+  if (result === false) {
     return res.status(type).json({ message });
   }
   next();

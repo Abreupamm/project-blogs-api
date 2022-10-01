@@ -1,14 +1,13 @@
 const categoryService = require('../service/categories.service');
 
-const isCategory = async (ids) => {
-  const result = ids.map(async (id) => { 
-    const category = await categoryService.getCategoryById(id);
-    return category;
-  });
+const isCategory = async (id) => {
+  const category = await categoryService.getCategoryById(id);
 
-  const valied = result.some((idCategory) => idCategory === true);
+  if (!category) {
+    return null;
+  }
 
-  return valied;
+  return true;
 };
 
 module.exports = isCategory;
