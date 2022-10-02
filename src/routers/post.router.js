@@ -8,7 +8,7 @@ const { categoryIdsIsValied, inputsIsValied } = require('../middlewares/valiedBl
 
 // router.post('/:id', postController);
 // router.put('/:id', postController);
-// router.get('/', postController);
+router.get('/', valiedToken, postController.getAllPosts);
 router.post('/', valiedToken, inputsIsValied, categoryIdsIsValied, postController.createPost);
 
 module.exports = router;
