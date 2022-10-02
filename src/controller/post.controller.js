@@ -3,7 +3,7 @@ const postService = require('../service/post.service');
 
 const createPost = async (req, res) => {
   const { type, message, post } = await postService.newPost(req.body, req.locals);
-
+  
   if (!post) {
     return res.status(type).json({ message });
   }
