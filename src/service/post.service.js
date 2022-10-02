@@ -5,6 +5,8 @@ const config = require('../config/config');
 const env = process.env.NODE_ENV || 'development';
 const sequelize = new Sequelize(config[env]);
 
+const mapError = require('../utils/error');
+
 const newPost = async ({ title, content, categoryIds }, locals) => {
   const t = await sequelize.transaction();
   // try {
@@ -41,7 +43,24 @@ const getAll = async () => {
   return { posts };
 };
 
+const getPostId = async (id) => {
+  const postId = await BlogPost.findOne({
+    where: { id },
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category, as: 'categories' },
+    ],
+  });
+  if (!postId) {
+    return { type: mapError('NOT_FOUND'), message: 'Post does not exist' };
+  }
+
+  const post = postId.dataValues;
+  return { post };
+};
+
 module.exports = {
   newPost,
   getAll,
+  getPostId,
 };
