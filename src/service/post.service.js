@@ -9,27 +9,23 @@ const mapError = require('../utils/error');
 
 const newPost = async ({ title, content, categoryIds }, locals) => {
   const t = await sequelize.transaction();
-  // try {
+  try {
   const post = await BlogPost.create(
-    { title, content, userId: locals.id },
-    { transaction: t },
-  );
-  console.log(post.dataValues.id);
+    { title, content, userId: locals.id }, { transaction: t },
+    );
   await Promise.all(
     categoryIds.map(async (id) => {
       await PostCategory.create(
-        { postId: post.dataValues.id, categoryId: id },
-        { transaction: t },
+        { postId: post.dataValues.id, categoryId: id }, { transaction: t },
       );
     }),
   );
-
   await t.commit();
   return { post };
-  // } catch (error) {
-  //   await t.rollback();
-  //   return { type: 500, message: error.type };
-  // }
+  } catch (error) {
+    await t.rollback();
+    return { type: 500, message: error.type };
+  }
 };
 
 const getAll = async () => {
@@ -59,8 +55,22 @@ const getPostId = async (id) => {
   return { post };
 };
 
+const editPostById = async (id, { title, content }) => {
+  await BlogPost.update({
+    title,
+    content,
+  },
+  {
+    where: { id },
+  });
+  const { post } = await getPostId(id);
+
+  return post;
+};
+
 module.exports = {
   newPost,
   getAll,
   getPostId,
+  editPostById,
 };

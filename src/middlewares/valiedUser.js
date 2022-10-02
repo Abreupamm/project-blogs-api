@@ -1,4 +1,5 @@
 const mapError = require('../utils/error');
+const serviceBloPost = require('../service/post.service');
 
 const displayNameIsValied = (req, res, next) => {
   const { displayName } = req.body;
@@ -34,8 +35,18 @@ const passwordIsValied = (req, res, next) => {
   next();
 };
 
+const valiedUserPost = async (req, res, next) => {
+  const { post } = await serviceBloPost.getPostId(req.params.id);
+
+  if (post.user.id !== req.locals.id) {
+    return res.status(mapError('UNAUTHORIZED')).json({ message: 'Unauthorized user' });
+  }
+  next();
+};
+
 module.exports = {
   displayNameIsValied,
   emailIsValied,
   passwordIsValied,
+  valiedUserPost,
 };
