@@ -13,15 +13,13 @@ const newPost = async ({ title, content, categoryIds }, locals) => {
   const post = await BlogPost.create(
     { title, content, userId: locals.id }, { transaction: t },
     );
+
   await Promise.all(
-    categoryIds.map(async (id) => {
-      await PostCategory.create(
-        { postId: post.dataValues.id, categoryId: id }, { transaction: t },
-      );
-    }),
-  );
+    categoryIds.map(async (e) => 
+    PostCategory.create({ postId: post.dataValues.id, categoryId: e }, { transaction: t })),
+    );
   await t.commit();
-  return { post };
+  return { post: post.dataValues };
   } catch (error) {
     await t.rollback();
     return { type: 500, message: error.type };
