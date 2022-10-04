@@ -13,8 +13,7 @@ const newPost = async ({ title, content, categoryIds }, locals) => {
   const post = await BlogPost.create(
     { title, content, userId: locals.id }, { transaction: t },
     );
-
-  await Promise.all(
+   await Promise.all(
     categoryIds.map(async (e) => 
     PostCategory.create({ postId: post.dataValues.id, categoryId: e }, { transaction: t })),
     );
